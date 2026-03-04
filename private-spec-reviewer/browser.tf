@@ -1,4 +1,5 @@
 resource "aws_security_group" "browser" {
+  # checkov:skip=CKV2_AWS_5:Security group is attached to aws_bedrockagentcore_browser resource
   count = var.enable_vpc ? 1 : 0
 
   name        = "baz-browser-sg"

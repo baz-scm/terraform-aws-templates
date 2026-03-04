@@ -20,6 +20,8 @@ resource "aws_iam_role" "browser" {
 }
 
 data "aws_iam_policy_document" "browser" {
+  # checkov:skip=CKV_AWS_356:Using AWS-managed KMS key for S3, ARN not known at plan time
+  # checkov:skip=CKV_AWS_111:Write access is scoped to specific S3 bucket, KMS wildcard needed for default encryption
   statement {
     sid    = "S3WriteRecordings"
     effect = "Allow"
