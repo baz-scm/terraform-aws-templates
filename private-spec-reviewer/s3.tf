@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "recordings" {
   # checkov:skip=CKV_AWS_144:no need for cross region replication
   # checkov:skip=CKV2_AWS_62:no need for event notification
   # checkov:skip=CKV_AWS_21:no need for versioning
-  bucket = "baz-spec-browser-recordings-${data.aws_caller_identity.current.account_id}"
+  bucket = "baz-browser-recordings-${data.aws_caller_identity.current.account_id}"
 
   tags = local.common_tags
 }

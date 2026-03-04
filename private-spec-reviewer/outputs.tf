@@ -18,3 +18,8 @@ output "external_id" {
   value       = random_uuid.external_id.result
   sensitive   = true
 }
+
+output "browser_security_group_id" {
+  description = "Security group ID for the browser (when VPC mode is enabled)"
+  value       = var.enable_vpc ? aws_security_group.browser[0].id : null
+}
