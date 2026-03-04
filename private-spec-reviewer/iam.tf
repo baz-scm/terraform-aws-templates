@@ -15,6 +15,8 @@ data "aws_iam_policy_document" "browser_assume_role" {
 resource "aws_iam_role" "browser" {
   name               = "baz-browser-execution"
   assume_role_policy = data.aws_iam_policy_document.browser_assume_role.json
+
+  tags = local.common_tags
 }
 
 data "aws_iam_policy_document" "browser" {
@@ -60,6 +62,8 @@ data "aws_iam_policy_document" "runtime_assume_role" {
 resource "aws_iam_role" "runtime" {
   name               = "baz-spec-login-runtime"
   assume_role_policy = data.aws_iam_policy_document.runtime_assume_role.json
+
+  tags = local.common_tags
 }
 
 data "aws_iam_policy_document" "runtime" {
@@ -110,6 +114,8 @@ data "aws_iam_policy_document" "cross_account_assume_role" {
 resource "aws_iam_role" "cross_account" {
   name               = "baz-spec-login-cross-account"
   assume_role_policy = data.aws_iam_policy_document.cross_account_assume_role.json
+
+  tags = local.common_tags
 }
 
 data "aws_iam_policy_document" "cross_account" {

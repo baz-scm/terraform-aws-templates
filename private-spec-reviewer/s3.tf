@@ -6,6 +6,8 @@ resource "aws_s3_bucket" "recordings" {
   # checkov:skip=CKV2_AWS_62:no need for event notification
   # checkov:skip=CKV_AWS_21:no need for versioning
   bucket = "baz-browser-recordings-${data.aws_caller_identity.current.account_id}"
+
+  tags = local.common_tags
 }
 
 resource "aws_s3_bucket_public_access_block" "recordings" {

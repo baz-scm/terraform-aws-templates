@@ -18,20 +18,26 @@ variable "handler_image_uri" {
   type        = string
 }
 
+variable "enable_vpc" {
+  description = "Enable VPC mode for private preview envs. When false, uses public browser."
+  type        = bool
+  default     = false
+}
+
 variable "vpc_id" {
-  description = "Optional VPC ID for private preview envs. Null = public browser."
+  description = "VPC ID for private preview envs. Required when enable_vpc is true."
   type        = string
   default     = null
 }
 
 variable "subnet_ids" {
-  description = "Required when vpc_id is set. Private subnets for browser ENIs."
+  description = "Private subnets for browser ENIs. Required when enable_vpc is true."
   type        = list(string)
   default     = []
 }
 
 variable "preview_env_cidr" {
-  description = "Required when vpc_id is set. CIDR for security group egress rule."
+  description = "CIDR for security group egress rule. Required when enable_vpc is true."
   type        = string
   default     = null
 }
@@ -52,4 +58,10 @@ variable "enable_privatelink" {
   description = "Route AgentCore API calls through a VPC endpoint. Requires vpc_id."
   type        = bool
   default     = false
+}
+
+variable "tags" {
+  description = "Additional tags to apply to all resources. Will be merged with default Project tag."
+  type        = map(string)
+  default     = null
 }

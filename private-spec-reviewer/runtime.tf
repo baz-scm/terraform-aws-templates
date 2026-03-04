@@ -30,4 +30,6 @@ resource "aws_bedrockagentcore_agent_runtime" "this" {
     SSM_PASSWORD_PATH = var.ssm_password_path
     BROWSER_ID        = aws_bedrockagentcore_browser.this.browser_id
   }
+
+  tags = local.common_tags
 }

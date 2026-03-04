@@ -1,5 +1,5 @@
 resource "aws_security_group" "browser" {
-  count = var.vpc_id != null ? 1 : 0
+  count = var.enable_vpc ? 1 : 0
 
   name        = "baz-browser-sg"
   description = "Security group for AgentCore Browser ENIs"
@@ -13,14 +13,20 @@ resource "aws_security_group" "browser" {
     cidr_blocks = [var.preview_env_cidr]
   }
 
+  tags = local.common_tags
+
   lifecycle {
     precondition {
-      condition     = var.preview_env_cidr != null
-      error_message = "preview_env_cidr must be set when vpc_id is set."
+      condition     = !var.enable_vpc || var.vpc_id != null
+      error_message = "vpc_id must be set when enable_vpc is true."
     }
     precondition {
-      condition     = length(var.subnet_ids) > 0
-      error_message = "subnet_ids must be non-empty when vpc_id is set."
+      condition     = !var.enable_vpc || var.preview_env_cidr != null
+      error_message = "preview_env_cidr must be set when enable_vpc is true."
+    }
+    precondition {
+      condition     = !var.enable_vpc || length(var.subnet_ids) > 0
+      error_message = "subnet_ids must be non-empty when enable_vpc is true."
     }
   }
 }
@@ -33,10 +39,10 @@ resource "aws_bedrockagentcore_browser" "this" {
   dynamic "network_configuration" {
     for_each = [1]
     content {
-      network_mode = var.vpc_id != null ? "VPC" : "PUBLIC"
+      network_mode = var.enable_vpc ? "VPC" : "PUBLIC"
 
       dynamic "vpc_config" {
-        for_each = var.vpc_id != null ? [1] : []
+        for_each = var.enable_vpc ? [1] : []
         content {
           subnets         = var.subnet_ids
           security_groups = [aws_security_group.browser[0].id]
@@ -52,4 +58,6 @@ resource "aws_bedrockagentcore_browser" "this" {
       prefix = "browser-recordings/"
     }
   }
+
+  tags = local.common_tags
 }
