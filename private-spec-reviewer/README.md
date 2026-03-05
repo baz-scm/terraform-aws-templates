@@ -75,15 +75,19 @@ module "baz_spec_login" {
 
 ## What to share back with Baz
 
-After running `terraform apply`, provide these outputs to Baz:
+After running `terraform apply`, run `terraform output` to see most values. The `external_id` is sensitive and must be retrieved separately:
 
-| Output | Description                                       |
-|---|---------------------------------------------------|
-| **`cross_account_role_arn`** | IAM role ARN for cross-account access             |
-| **`runtime_arn`** | Agentcore function ARN                            |
-| **`browser_id`** | Browser resource identifier                       |
-| **`external_id`** | Security token for role assumption                |
-| **Deployment region** | AWS region where you deployed (e.g., `us-east-1`) |
+```bash
+terraform output -raw external_id
+```
+
+Share these with the baz onboarding team to get this set up within the baz platform.
+
+| Output | Description |
+|---|---|
+| **`cross_account_role_arn`** | IAM role ARN for cross-account access |
+| **`runtime_arn`** | Agentcore function ARN |
+| **`external_id`** | Security token for role assumption (sensitive — use command above) |
 
 ---
 

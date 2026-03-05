@@ -58,8 +58,8 @@ resource "aws_instance" "test_server" {
   vpc_security_group_ids = [aws_security_group.test_server.id]
 
   user_data_base64 = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
-    username = "testuser"
-    password = "TestPassword123!"
+    username = aws_ssm_parameter.username.value
+    password = aws_ssm_parameter.password.value
   }))
 
   user_data_replace_on_change = true

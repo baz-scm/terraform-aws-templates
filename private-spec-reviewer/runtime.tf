@@ -13,8 +13,10 @@ resource "aws_bedrockagentcore_agent_runtime" "this" {
   }
 
   environment_variables = {
-    SSM_USERNAME_PATH = var.ssm_username_path
-    SSM_PASSWORD_PATH = var.ssm_password_path
+    // The data objects verify the SSM parameters exist, and if not give a good deploy time error instead of letting
+    // the runtime fail and searching the logs
+    SSM_USERNAME_PATH = data.aws_ssm_parameter.username.name
+    SSM_PASSWORD_PATH = data.aws_ssm_parameter.password.name
     BROWSER_ID        = aws_bedrockagentcore_browser.this.browser_id
   }
 
