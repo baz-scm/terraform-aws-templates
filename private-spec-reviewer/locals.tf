@@ -1,11 +1,4 @@
 locals {
-  # Validate that if enable_vpc is true, required VPC parameters are provided
-  validate_vpc_config = var.enable_vpc ? (
-    var.vpc_id != null &&
-    length(var.subnet_ids) > 0 &&
-    var.preview_env_cidr != null
-  ) : true
-
   # Merge default Project tag with user-provided tags
   common_tags = merge(
     {
@@ -13,4 +6,12 @@ locals {
     },
     var.tags != null ? var.tags : {}
   )
+}
+
+data "aws_ssm_parameter" "username" {
+  name = var.ssm_username_path
+}
+
+data "aws_ssm_parameter" "password" {
+  name = var.ssm_password_path
 }
