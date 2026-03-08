@@ -16,6 +16,7 @@ variable "ssm_password_path" {
 variable "handler_image_uri" {
   description = "ECR image URI for the login handler — provided by Baz, deployed by customer"
   type        = string
+  default     = "public.ecr.aws/r0t2y3g0/private-spec-reviewer-handler:v1"
 }
 
 variable "enable_vpc" {
