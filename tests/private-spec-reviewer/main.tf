@@ -40,9 +40,8 @@ module "private_spec_reviewer" {
   source = "../../private-spec-reviewer"
 
   baz_aws_account_id = "647348643223"
-  ssm_username_path  = aws_ssm_parameter.username.name
-  ssm_password_path  = aws_ssm_parameter.password.name
-  handler_image_uri  = "public.ecr.aws/docker/library/python:3.14"
+  ssm_username_path  = "/bazai/preview/username"
+  ssm_password_path  = "/bazai/preview/password"
   region             = "eu-central-1"
 
   enable_vpc         = true
