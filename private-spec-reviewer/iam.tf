@@ -125,13 +125,19 @@ data "aws_iam_policy_document" "cross_account" {
     sid       = "InvokeRuntime"
     effect    = "Allow"
     actions   = ["bedrock-agentcore:InvokeAgentRuntime"]
-    resources = [aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn]
+    resources = [
+      aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn,
+      "${aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn}/*",
+    ]
   }
 
   statement {
-    sid       = "ConnectBrowser"
-    effect    = "Allow"
-    actions   = ["bedrock-agentcore:ConnectBrowserAutomationStream"]
+    sid    = "BrowserAccess"
+    effect = "Allow"
+    actions = [
+      "bedrock-agentcore:ConnectBrowserAutomationStream",
+      "bedrock-agentcore:StopBrowserSession",
+    ]
     resources = [aws_bedrockagentcore_browser.this.browser_arn]
   }
 }
