@@ -37,7 +37,7 @@ module "vpc" {
 }
 
 module "private_spec_reviewer" {
-  source = "../../private-spec-reviewer"
+  source = "../../terraform/private-spec-reviewer"
 
   baz_aws_account_id = "647348643223"
   ssm_username_path  = "/bazai/preview/username"

@@ -1,0 +1,21 @@
+{
+  "name": "@baz/pulumi-private-spec-reviewer",
+  "version": "1.0.0",
+  "description": "Pulumi component for baz.co Private Spec Reviewer infrastructure on AWS",
+  "main": "bin/index.js",
+  "types": "bin/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@pulumi/aws": "^7.0.0",
+    "@pulumi/pulumi": "^3.0.0",
+    "@pulumi/random": "^4.0.0"
+  },
+  "devDependencies": {
+    "@pulumi/aws": "^7.0.0",
+    "@pulumi/pulumi": "^3.0.0",
+    "@pulumi/random": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

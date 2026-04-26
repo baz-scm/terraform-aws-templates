@@ -1,0 +1,16 @@
+{
+  "name": "private-spec-reviewer-test",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "@baz/pulumi-private-spec-reviewer": "file:../../../pulumi/private-spec-reviewer",
+    "@pulumi/aws": "^7.0.0",
+    "@pulumi/awsx": "^2.0.0",
+    "@pulumi/pulumi": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0"
+  }
+}

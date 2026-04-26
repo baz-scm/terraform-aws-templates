@@ -1,0 +1,3 @@
+name: private-spec-reviewer-test
+runtime: nodejs
+description: Test stack for @baz/pulumi-private-spec-reviewer

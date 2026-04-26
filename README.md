@@ -1,12 +1,17 @@
-# Terraform AWS Templates
+# AWS IaC Templates
 
-This repository contains Terraform templates for baz.co customers to deploy infrastructure in their AWS accounts.
+This repository contains infrastructure-as-code templates for baz.co customers to deploy infrastructure in their AWS accounts. Templates are available in both Terraform and Pulumi (TypeScript).
 
 ## Projects
 
 ### Private Spec Reviewer
 
-Located in `private-spec-reviewer/`, this module deploys the infrastructure needed for automated spec review functionality using Amazon Bedrock AgentCore.
-It allows customers to avoid sending us the user and password details for their environment, and keep the URLs private.
+Deploys the infrastructure needed for automated spec review functionality using Amazon Bedrock AgentCore. Allows customers to avoid sending credential details and keep preview environment URLs private.
 
-See `private-spec-reviewer/README.md` for usage instructions.
+#### Terraform
+
+Located in `terraform/private-spec-reviewer/`. See `terraform/private-spec-reviewer/README.md` for usage instructions.
+
+#### Pulumi (TypeScript)
+
+Located in `pulumi/private-spec-reviewer/`. Published as [`@baz/pulumi-private-spec-reviewer`](https://www.npmjs.com/package/@baz/pulumi-private-spec-reviewer) on npm. See `pulumi/private-spec-reviewer/README.md` for usage instructions.
