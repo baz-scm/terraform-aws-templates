@@ -1,0 +1,4 @@
+config:
+  aws:profile: sandbox
+  aws:region: eu-central-1
+encryptionsalt: v1:loT10P7MO7s=:v1:cYw1RvAydOfJbVIz:9tQ372DC1Ki1j/7tZebm95hn4AS/sg==

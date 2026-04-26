@@ -3,5 +3,6 @@
 .terraform.lock.hcl
 .idea
 terraform.tfstate.backup
+node_modules
 node_modules/
 bin/
