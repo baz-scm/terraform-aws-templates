@@ -1,5 +1,7 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_region" "current" {}
+
 resource "aws_s3_bucket" "recordings" {
   # checkov:skip=CKV_AWS_18:no need for access logs
   # checkov:skip=CKV_AWS_144:no need for cross region replication

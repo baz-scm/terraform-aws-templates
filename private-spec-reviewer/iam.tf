@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "browser" {
     condition {
       test     = "StringEquals"
       variable = "kms:ViaService"
-      values   = ["s3.${var.region}.amazonaws.com"]
+      values   = ["s3.${data.aws_region.current.name}.amazonaws.com"]
     }
 
     condition {
