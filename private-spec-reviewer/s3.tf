@@ -1,5 +1,7 @@
 data "aws_caller_identity" "current" {}
 
+data "aws_region" "current" {}
+
 resource "aws_s3_bucket" "recordings" {
   # checkov:skip=CKV_AWS_18:no need for access logs
   # checkov:skip=CKV_AWS_144:no need for cross region replication
@@ -24,7 +26,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "recordings" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "aws:kms"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.recordings.arn
     }
   }
 }

@@ -20,8 +20,6 @@ resource "aws_iam_role" "browser" {
 }
 
 data "aws_iam_policy_document" "browser" {
-  # checkov:skip=CKV_AWS_356:Using AWS-managed KMS key for S3, ARN not known at plan time
-  # checkov:skip=CKV_AWS_111:Write access is scoped to specific S3 bucket, KMS wildcard needed for default encryption
   statement {
     sid    = "S3WriteRecordings"
     effect = "Allow"
@@ -39,7 +37,19 @@ data "aws_iam_policy_document" "browser" {
       "kms:Decrypt",
       "kms:GenerateDataKey"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.recordings.arn]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.${data.aws_region.current.name}.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["${aws_s3_bucket.recordings.arn}/*"]
+    }
   }
 }
 
@@ -70,10 +80,13 @@ resource "aws_iam_role" "runtime" {
 
 data "aws_iam_policy_document" "runtime" {
   statement {
-    sid       = "SSMGetParameter"
-    effect    = "Allow"
-    actions   = ["ssm:GetParameter"]
-    resources = ["arn:aws:ssm:*:*:parameter/*"]
+    sid     = "SSMGetParameter"
+    effect  = "Allow"
+    actions = ["ssm:GetParameter"]
+    resources = [
+      data.aws_ssm_parameter.username.arn,
+      data.aws_ssm_parameter.password.arn,
+    ]
   }
 
   statement {
@@ -122,9 +135,9 @@ resource "aws_iam_role" "cross_account" {
 
 data "aws_iam_policy_document" "cross_account" {
   statement {
-    sid       = "InvokeRuntime"
-    effect    = "Allow"
-    actions   = ["bedrock-agentcore:InvokeAgentRuntime"]
+    sid     = "InvokeRuntime"
+    effect  = "Allow"
+    actions = ["bedrock-agentcore:InvokeAgentRuntime"]
     resources = [
       aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn,
       "${aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn}/*",
