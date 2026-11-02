@@ -36,10 +36,18 @@ data "aws_iam_policy_document" "browser" {
     sid    = "KMSEncrypt"
     effect = "Allow"
     actions = [
+      "kms:Encrypt",
       "kms:Decrypt",
-      "kms:GenerateDataKey"
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
     ]
     resources = ["*"]
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:s3:arn"
+      values   = ["${aws_s3_bucket.recordings.arn}/*"]
+    }
   }
 }
 
@@ -70,10 +78,13 @@ resource "aws_iam_role" "runtime" {
 
 data "aws_iam_policy_document" "runtime" {
   statement {
-    sid       = "SSMGetParameter"
-    effect    = "Allow"
-    actions   = ["ssm:GetParameter"]
-    resources = ["arn:aws:ssm:*:*:parameter/*"]
+    sid     = "SSMGetParameter"
+    effect  = "Allow"
+    actions = ["ssm:GetParameter"]
+    resources = [
+      data.aws_ssm_parameter.username.arn,
+      data.aws_ssm_parameter.password.arn,
+    ]
   }
 
   statement {
@@ -122,9 +133,9 @@ resource "aws_iam_role" "cross_account" {
 
 data "aws_iam_policy_document" "cross_account" {
   statement {
-    sid       = "InvokeRuntime"
-    effect    = "Allow"
-    actions   = ["bedrock-agentcore:InvokeAgentRuntime"]
+    sid     = "InvokeRuntime"
+    effect  = "Allow"
+    actions = ["bedrock-agentcore:InvokeAgentRuntime"]
     resources = [
       aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn,
       "${aws_bedrockagentcore_agent_runtime.this.agent_runtime_arn}/*",
