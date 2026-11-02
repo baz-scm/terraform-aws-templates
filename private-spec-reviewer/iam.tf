@@ -36,12 +36,16 @@ data "aws_iam_policy_document" "browser" {
     sid    = "KMSEncrypt"
     effect = "Allow"
     actions = [
-      "kms:Encrypt",
       "kms:Decrypt",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey"
+      "kms:GenerateDataKey"
     ]
     resources = ["*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.${var.region}.amazonaws.com"]
+    }
 
     condition {
       test     = "StringLike"
