@@ -49,6 +49,12 @@ data "aws_iam_policy_document" "recordings_key" {
     }
 
     condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["s3.${data.aws_region.current.name}.amazonaws.com"]
+    }
+
+    condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:s3:arn"
       values   = ["${aws_s3_bucket.recordings.arn}/*"]
